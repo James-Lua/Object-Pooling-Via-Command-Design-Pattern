@@ -1,22 +1,19 @@
 public class TurnBasedGame {
-    private Player player;
-    private final CommandManager commandManager;
+    CommandMacro masterMacro;
 
     public TurnBasedGame() {
-        // Starting position (0,0)
-        player = new Player(0, 0);
-        commandManager = new CommandManager(player, 5);
+        masterMacro = new CommandMacro();
+        CharacterCreator.inputCharacterCreator();
     }
 
-    // Wrapper method.
-    public void movePlayer(int toX, int toY) {
-        commandManager.executeMove(toX, toY);
-        // Future movement logic can be wrapped here.
+    public void executeStep() {
+        for(Character c : Character.getCharacterArrayList()) {
+            masterMacro.add(c.getNextMove());
+        }
+        masterMacro.execute();
     }
 
-    // Wrapper method.
-    public void undo() {
-        commandManager.undoLast();
-        // Would need to wrap other logic that would take place on an undo, like world history and health history, etc.
+    public void undoStep() {
+        // send undo to master macro
     }
 }

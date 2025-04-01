@@ -1,28 +1,27 @@
 public class MoveCommand implements Command {
-    private Player player;
+    private Character character;
     private int fromX, fromY;
     private int toX, toY;
     private boolean executed;
 
-    // Empty MoveCommand constructor.
-    public MoveCommand() { }
 
-    // initialize defines subject, location, and destination.
-    // Called before && separate to execute() to ensure the command is loaded with the proper state.
-    public void initialize(Player player, int toX, int toY) {
-        this.player = player;
-        this.fromX = player.getX();
-        this.fromY = player.getY();
+    public void initialize(Character character, int toX, int toY) {
+        if (this.character != null) { this.character = character;}
+        // each character has their own pool, so reused objects may already have their character assigned.
+
+        this.fromX = character.getX();
+        this.fromY = character.getY();
         this.toX = toX;
         this.toY = toY;
+
         this.executed = false;
     }
 
     // We execute the initialized movement command, given there is a valid subject and flag.
     @Override
     public void execute() {
-        if (!executed && player != null) {
-            player.setPosition(toX, toY);
+        if (!executed && character != null) {
+            character.setPosition(toX, toY);
             executed = true;
         }
     }
@@ -31,8 +30,8 @@ public class MoveCommand implements Command {
     // We reset the executed flag so movement can be either 'redone' or redefined and executed. #Currently the object is reset on undo()#
     @Override
     public void undo() {
-        if (executed && player != null) {
-            player.setPosition(fromX, fromY);
+        if (executed && character != null) {
+            character.setPosition(fromX, fromY);
             executed = false;
         }
     }
@@ -40,7 +39,7 @@ public class MoveCommand implements Command {
     // Clears the object for reuse. This is called by CommandPool when releasing command objects back into the pool.
     @Override
     public void reset() {
-        this.player = null;
+        // this.character = null; Currently not necessary
         this.fromX = this.fromY = this.toX = this.toY = 0;
         this.executed = false;
     }

@@ -6,17 +6,15 @@ public class CommandPool<C extends Command> {
     private final CommandFactory<C> factory; // Generic factory interface, used to create new command objects when the pool is empty.
 
     // Basic constructor that makes use of the generic factory with a parameter for initial pool size.
-    public CommandPool(int initialSize, CommandFactory<C> factory) {
+    public CommandPool(CommandFactory<C> factory, int initialSize) {
         this.factory = factory;
         for (int i = 0; i < initialSize; i++) {
             pool.push(factory.create());
 
-            System.out.println("Creating object.");
-            System.out.println(pool);
+            System.out.println("Created object [" + pool.getLast().toString() + "] for pool [" + super.toString() + "], pool now contains " + pool);
         }
     }
 
-    // Basic pop function with a factory support.
     // If the pool is empty, factory creates a new object, else pop from top of the stack.
     public C acquire() {
         return pool.isEmpty() ? factory.create() : pool.pop();
