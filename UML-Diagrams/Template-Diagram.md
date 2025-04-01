@@ -1,4 +1,4 @@
-``mermaid
+```mermaid
 
 classDiagram
     class Character {
@@ -42,4 +42,4 @@ classDiagram
     Character <|-- CityGuard
     Game --> Character
 
-``
+```
