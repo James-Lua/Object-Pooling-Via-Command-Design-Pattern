@@ -9,11 +9,11 @@ public class Cell {
     }
 
     public int getX(){
-        return x;
+        return this.x;
     }
 
     public int getY(){
-        return y;
+        return this.y;
     }
 
     public boolean isOccupied(){
@@ -22,9 +22,11 @@ public class Cell {
 
     public void occupyCell(){
         this.isOccupied = true;
+        System.out.println("Cell at (" + this.x + ", " + this.y + ") is now occupied.");
     }
 
     public void leaveCell(){
         this.isOccupied = false;
+        System.out.println("Cell at (" + this.x + ", " + this.y + ") is now unoccupied.");
     }
 }

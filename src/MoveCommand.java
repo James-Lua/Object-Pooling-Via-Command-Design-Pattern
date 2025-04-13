@@ -1,62 +1,51 @@
 public class MoveCommand implements Command {
-    private Character character;
+    private final Character character;
     private Cell nextCell, previousCell;
-    private int fromX, fromY;
-    private int toX, toY;
     private boolean executed;
 
     public MoveCommand(Character character, Cell nextCell) {
-        if (!nextCell.isOccupied() && character != null) {
-            this.nextCell = nextCell;
-            this.character = character;
-            this.fromX = character.getX();
-            this.fromY = character.getY();
-            this.toX = nextCell.getX();
-            this.toY = nextCell.getY();
-            this.executed = false;
+        this.character = character;
+        this.nextCell = nextCell;
+        this.previousCell = MapGenerator.getCellAt(character.getPosition().getX(), character.getPosition().getY());
+
+        // This logic will eventually be moved to a different class that handles what cells can be selected based on distance and occupied bool.
+        if (nextCell.isOccupied()) {
+            System.out.println(character.getName() + " cannot move to occupied cell!");
+            return;
         }
-    }
-
-    // Debug function
-    public void moveToCoordinates(Character character, int toX, int toY) {
-        if (this.character != null) { this.character = character;}
-
-        this.fromX = character.getX();
-        this.fromY = character.getY();
-        this.toX = toX;
-        this.toY = toY;
 
         this.executed = false;
     }
 
     @Override
     public void execute() {
-        if (!this.executed && this.character != null && !this.nextCell.isOccupied()) {
-            this.previousCell = MapGenerator.getCellAt(this.character.getX(), this.character.getY());
-            if (this.previousCell != null) {
-                this.previousCell.leaveCell();
-            }
-            this.character.setPosition(this.toX, this.toY);
+        if (!this.executed && !this.nextCell.isOccupied()) {
+            if (this.previousCell != null) { this.previousCell.leaveCell(); }
             this.nextCell.occupyCell();
+            this.character.getPosition().setPosition(this.nextCell.getX(), this.nextCell.getY());
             this.executed = true;
         }
     }
 
-   @Override
+    @Override
     public void undo() {
-        if (this.executed && this.character != null) {
+        if (this.executed) {
+            // Free the current cell
             this.nextCell.leaveCell();
+
+            // Re-occupy the previous cell
             if (this.previousCell != null) {
                 this.previousCell.occupyCell();
+                this.character.getPosition().setPosition(this.previousCell.getX(), this.previousCell.getY());
             }
-            this.character.setPosition(this.fromX, this.fromY);
             this.executed = false;
         }
     }
 
     @Override
     public void reset() {
-        this.fromX = this.fromY = this.toX = this.toY = 0;
+        this.nextCell = null;
+        this.previousCell = null;
         this.executed = false;
     }
 }

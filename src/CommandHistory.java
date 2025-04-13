@@ -1,14 +1,23 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-class CommandHistory {
-    private final Stack<CommandMacro> history = new Stack<>();
+public class CommandHistory {
+    private final Deque<CommandMacro> history = new ArrayDeque<>();
 
-    public void push(CommandMacro commandMacro) {
-        history.push(commandMacro);
+    public void push(CommandMacro macro) {
+        history.push(macro);
     }
 
     public CommandMacro pop() {
-        return history.isEmpty() ? null : history.pop();
+        return history.pop();
+    }
+
+    public CommandMacro removeOldest() {
+        return history.removeLast();
+    }
+
+    public int size() {
+        return history.size();
     }
 
     public boolean isEmpty() {

@@ -1,35 +1,37 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class CommandMacro implements Command {
-    private final List<Command> cmds = new ArrayList<>();
+public class CommandMacro implements Command {
+    private final List<Command> commands = new ArrayList<>();
 
     public void add(Command cmd) {
-        cmds.add(cmd);
+        this.commands.add(cmd);
+    }
+
+    public void addAll(List<Command> commands) {
+        this.commands.addAll(commands);
     }
 
     public void remove(Command cmd) {
-        cmds.remove(cmd);
+        this.commands.remove(cmd);
     }
 
     @Override
     public void execute() {
-        for (Command c : cmds) {
+        for (Command c : this.commands) {
             c.execute();
         }
     }
 
     @Override
     public void undo() {
-        for (int i = cmds.size() - 1; i >= 0; i--) {
-            cmds.get(i).undo();
+        for (int i = commands.size() - 1; i >= 0; i--) {
+            commands.get(i).undo();
         }
     }
 
     @Override
     public void reset() {
-        for (Command c : cmds) {
-            c.reset();
-        }
+        this.commands.clear();
     }
 }

@@ -1,30 +1,24 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class TurnBasedGame {
 
     public TurnBasedGame() {
-        // Generate map FIRST
-        MapGenerator.generateCellArray(5,5);
-        CharacterGenerator.inputCharacterCreator();
-
-        List<Cell> cellArray = MapGenerator.getCellArray();
-
-        ArrayList<Character> cAL = Character.getCharacterArrayList();
-        Character characterFirst = cAL.getFirst();
-        characterFirst.getCommandManager().addCommand(new MoveCommand(characterFirst, cellArray.get(8)));
-        characterFirst.getCommandManager().addCommand(new MoveCommand(characterFirst, cellArray.get(30)));
+        MapGenerator.generateCellArray(5, 5);
     }
 
     public void executeStep() {
-        for(Character c : Character.getCharacterArrayList()) {
+        System.out.println("Executing Game Step...");
+        for (Character c : Character.getCharacterArrayList()) {
+            System.out.println("Executing CommandManager for " + c.getName());
             c.getCommandManager().execute();
         }
+        System.out.println("Game Step Successfully Executed. \n");
     }
 
     public void undoStep() {
-        for(Character c : Character.getCharacterArrayList()) {
+        System.out.println("Undoing Game Step");
+        for (Character c : Character.getCharacterArrayList()) {
+            System.out.println(c.getName() + " undoing CommandManager");
             c.getCommandManager().undo();
         }
+        System.out.println("Game Step Successfully Undone. \n");
     }
 }

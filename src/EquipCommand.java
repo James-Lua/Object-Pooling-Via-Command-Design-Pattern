@@ -1,5 +1,4 @@
-public class EquipCommand implements Command{
-
+public class EquipCommand implements Command {
 
     @Override
     public void execute() {

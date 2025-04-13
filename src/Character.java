@@ -1,46 +1,39 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Character {
-    private static final ArrayList<Character> characterArrayList = new ArrayList<>();
+    private static final List<Character> characterArrayList = new ArrayList<>();
+    private final List<String> inventory = new ArrayList<>();
     private final CommandManager commandManager;
+    private final ResourcePoints resourcePoints;
+    private final Position position;
     private final String name;
-    private int x, y;
-    private int hp;
-    private int textureID;
 
-    public Character(String name, int x, int y, int hp, int textureID) {
+    public Character(String name, Position position, ResourcePoints resourcePoints) {
         this.name = name;
-        this.x = x;
-        this.y = y;
-        this.hp = hp;
-        this.textureID = textureID;
-
+        this.position = position;
+        this.resourcePoints = resourcePoints;
         this.commandManager = new CommandManager();
-        //System.out.println("\n...Created Character [" + this + "] with Command Manager object [" + commandManager + "], name " + name + ", position (" +  x + ", " + y + "), and health set to " + hp + "...\n");
+
+        Cell initialCell = MapGenerator.getCellAt(this.position.getX(), this.position.getY());
+        if (initialCell != null && !initialCell.isOccupied()) {
+            initialCell.occupyCell();
+        }
 
         characterArrayList.add(this);
     }
 
-    public static ArrayList<Character> getCharacterArrayList() { return characterArrayList; }
+    public static List<Character> getCharacterArrayList() { return characterArrayList; }
 
     public CommandManager getCommandManager() { return this.commandManager; }
 
+    public Position getPosition() { return this.position; }
+
     public String getName() { return this.name; }
 
-    public int getX() { return this.x; }
+    public ResourcePoints getResourcePoints() { return this.resourcePoints; }
 
-    public int getY() { return this.y; }
-
-    public void setPosition(int x, int y) {
-        System.out.println(this.name + " was at (" + this.x + ", " + this.y + "), moving...");
-        this.x = x;
-        this.y = y;
-        System.out.println(this.name + " moved to (" + x + ", " + y + ")");
+    public List<String> getInventory() {
+        return inventory;
     }
-
-    public int getHP() { return this.hp; }
-
-    public void setHP(int hp) { this.hp = hp; }
-
-    public void reset() {}
 }
