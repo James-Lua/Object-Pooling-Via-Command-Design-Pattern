@@ -1,13 +1,26 @@
 public class MoveCommand implements Command {
     private Character character;
+    private Cell cell;
     private int fromX, fromY;
     private int toX, toY;
     private boolean executed;
 
+    // New init method for future cell system
+    public MoveCommand(Character character, Cell cell) {
+        if (!cell.isOccupied() && character != null) {
+            this.cell = cell;
+            this.character = character;
+            this.fromX = character.getX();
+            this.fromY = character.getY();
+            this.toX = cell.getX();
+            this.toY = cell.getY();
+            this.executed = false;
+        }
+    }
 
-    public void initialize(Character character, int toX, int toY) {
+    // Old init method for direct coordinate input
+    public void moveToCoordinates(Character character, int toX, int toY) {
         if (this.character != null) { this.character = character;}
-        // each character has their own pool, so reused objects may already have their character assigned.
 
         this.fromX = character.getX();
         this.fromY = character.getY();
@@ -17,26 +30,23 @@ public class MoveCommand implements Command {
         this.executed = false;
     }
 
-    // We execute the initialized movement command, given there is a valid subject and flag.
     @Override
     public void execute() {
-        if (!executed && character != null) {
-            character.setPosition(toX, toY);
-            executed = true;
+        if (!this.executed && this.character != null && !this.cell.isOccupied()) {
+            this.character.setPosition(toX, toY);
+            this.cell.occupyCell();
+            this.executed = true;
         }
     }
 
-    // Reverse the movement action performed by execute() using the vector2 pair (fromX, fromY) that we saved on initialization.
-    // We reset the executed flag so movement can be either 'redone' or redefined and executed. #Currently the object is reset on undo()#
-    @Override
+   @Override
     public void undo() {
-        if (executed && character != null) {
-            character.setPosition(fromX, fromY);
-            executed = false;
+        if (this.executed && this.character != null) {
+            this.character.setPosition(this.fromX, this.fromY);
+            this.executed = false;
         }
     }
 
-    // Clears the object for reuse. This is called by CommandPool when releasing command objects back into the pool.
     @Override
     public void reset() {
         // this.character = null; Currently not necessary

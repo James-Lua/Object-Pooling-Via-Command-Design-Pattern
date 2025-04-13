@@ -1,19 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class TurnBasedGame {
-    CommandMacro masterMacro;
 
     public TurnBasedGame() {
-        masterMacro = new CommandMacro();
+        // Currently for testing
         CharacterCreator.inputCharacterCreator();
+        mapGenerator.generateCellArray(5,5);
+        List<Cell> cellArray = mapGenerator.getCellArray();
+
+        ArrayList<Character> cAL = Character.getCharacterArrayList();
+        Character characterFirst = cAL.getFirst();
+        characterFirst.getCommandManager().addCommand(new MoveCommand(characterFirst, cellArray.get(8)));
+        characterFirst.getCommandManager().addCommand(new MoveCommand(characterFirst, cellArray.get(30)));
     }
 
     public void executeStep() {
         for(Character c : Character.getCharacterArrayList()) {
-            masterMacro.add(c.getNextMove());
+            c.getCommandManager().execute();
         }
-        masterMacro.execute();
     }
 
     public void undoStep() {
-        // send undo to master macro
+        for(Character c : Character.getCharacterArrayList()) {
+            c.getCommandManager().undo();
+        }
     }
 }

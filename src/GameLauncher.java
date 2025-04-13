@@ -3,5 +3,7 @@ public class GameLauncher {
         TurnBasedGame game = new TurnBasedGame();
 
         game.executeStep();
+        game.executeStep();
+        game.undoStep();
     }
 }

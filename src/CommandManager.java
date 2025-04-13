@@ -1,30 +1,30 @@
-public class CommandManager {
-    //private final CommandPool<MoveCommand> moveCommandPool;
-    //private final CommandHistory commandHistory;
-    //private final Character character;
+public class CommandManager implements Command {
+    private final CommandHistory commandHistory;
+    private final CommandMacro commandMacro;
 
     public CommandManager() {
-        //this.character = character;
-
-        // Create a pool for MoveCommand objects using a lambda as factory.
-        //moveCommandPool = new CommandPool<>(MoveCommand::new, 5);
-
-        //commandHistory = new CommandHistory();
+        this.commandMacro = new CommandMacro();
+        this.commandHistory = new CommandHistory();
     }
 
-    /* Undo the last executed command and return it to the pool
-    public void undoLast(Command command) {
-        Command cmd = commandHistory.pop();
-        if (cmd != null) {
-            cmd.undo();
-            //CommandPool<command>.release(command);
-        } else {
-            System.out.println("No command to undo!");
-        }
+    public void addCommand(Command command) {
+        this.commandMacro.add(command);
     }
-     */
 
-    public Command getAllCommands() {
-        return null;
+    @Override
+    public void execute() {
+        this.commandMacro.execute();
+        this.commandHistory.push(this.commandMacro);
+    }
+
+    @Override
+    public void undo() {
+        CommandMacro lastCommandMacro = this.commandHistory.pop();
+        lastCommandMacro.undo();
+    }
+
+    @Override
+    public void reset() {
+        this.commandMacro.reset();
     }
 }

@@ -1,13 +1,13 @@
 import java.util.Stack;
 
-public class CommandHistory {
-    private final Stack<Command> history = new Stack<>();
+class CommandHistory {
+    private final Stack<CommandMacro> history = new Stack<>();
 
-    public void push(Command cmd) {
-        history.push(cmd);
+    public void push(CommandMacro commandMacro) {
+        history.push(commandMacro);
     }
 
-    public Command pop() {
+    public CommandMacro pop() {
         return history.isEmpty() ? null : history.pop();
     }
 
