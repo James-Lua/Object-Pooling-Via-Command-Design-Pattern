@@ -21,8 +21,8 @@ class CommandMacro implements Command {
 
     @Override
     public void undo() {
-        for (Command c : cmds) {
-            c.undo();
+        for (int i = cmds.size() - 1; i >= 0; i--) {
+            cmds.get(i).undo();
         }
     }
 

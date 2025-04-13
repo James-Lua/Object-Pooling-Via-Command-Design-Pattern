@@ -4,10 +4,11 @@ import java.util.List;
 public class TurnBasedGame {
 
     public TurnBasedGame() {
-        // Currently for testing
-        CharacterCreator.inputCharacterCreator();
-        mapGenerator.generateCellArray(5,5);
-        List<Cell> cellArray = mapGenerator.getCellArray();
+        // Generate map FIRST
+        MapGenerator.generateCellArray(5,5);
+        CharacterGenerator.inputCharacterCreator();
+
+        List<Cell> cellArray = MapGenerator.getCellArray();
 
         ArrayList<Character> cAL = Character.getCharacterArrayList();
         Character characterFirst = cAL.getFirst();

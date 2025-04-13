@@ -17,10 +17,14 @@ public class Cell {
     }
 
     public boolean isOccupied(){
-        return isOccupied;
+        return this.isOccupied;
     }
 
     public void occupyCell(){
-        isOccupied = true;
+        this.isOccupied = true;
+    }
+
+    public void leaveCell(){
+        this.isOccupied = false;
     }
 }

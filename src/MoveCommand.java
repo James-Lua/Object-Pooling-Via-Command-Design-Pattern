@@ -1,24 +1,23 @@
 public class MoveCommand implements Command {
     private Character character;
-    private Cell cell;
+    private Cell nextCell, previousCell;
     private int fromX, fromY;
     private int toX, toY;
     private boolean executed;
 
-    // New init method for future cell system
-    public MoveCommand(Character character, Cell cell) {
-        if (!cell.isOccupied() && character != null) {
-            this.cell = cell;
+    public MoveCommand(Character character, Cell nextCell) {
+        if (!nextCell.isOccupied() && character != null) {
+            this.nextCell = nextCell;
             this.character = character;
             this.fromX = character.getX();
             this.fromY = character.getY();
-            this.toX = cell.getX();
-            this.toY = cell.getY();
+            this.toX = nextCell.getX();
+            this.toY = nextCell.getY();
             this.executed = false;
         }
     }
 
-    // Old init method for direct coordinate input
+    // Debug function
     public void moveToCoordinates(Character character, int toX, int toY) {
         if (this.character != null) { this.character = character;}
 
@@ -32,9 +31,13 @@ public class MoveCommand implements Command {
 
     @Override
     public void execute() {
-        if (!this.executed && this.character != null && !this.cell.isOccupied()) {
-            this.character.setPosition(toX, toY);
-            this.cell.occupyCell();
+        if (!this.executed && this.character != null && !this.nextCell.isOccupied()) {
+            this.previousCell = MapGenerator.getCellAt(this.character.getX(), this.character.getY());
+            if (this.previousCell != null) {
+                this.previousCell.leaveCell();
+            }
+            this.character.setPosition(this.toX, this.toY);
+            this.nextCell.occupyCell();
             this.executed = true;
         }
     }
@@ -42,6 +45,10 @@ public class MoveCommand implements Command {
    @Override
     public void undo() {
         if (this.executed && this.character != null) {
+            this.nextCell.leaveCell();
+            if (this.previousCell != null) {
+                this.previousCell.occupyCell();
+            }
             this.character.setPosition(this.fromX, this.fromY);
             this.executed = false;
         }
@@ -49,7 +56,6 @@ public class MoveCommand implements Command {
 
     @Override
     public void reset() {
-        // this.character = null; Currently not necessary
         this.fromX = this.fromY = this.toX = this.toY = 0;
         this.executed = false;
     }

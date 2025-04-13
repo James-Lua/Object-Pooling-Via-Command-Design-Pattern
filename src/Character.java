@@ -6,16 +6,17 @@ public abstract class Character {
     private final String name;
     private int x, y;
     private int hp;
+    private int textureID;
 
-    public Character(String name, int x, int y, int hp) {
+    public Character(String name, int x, int y, int hp, int textureID) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.hp = hp;
+        this.textureID = textureID;
 
-        System.out.println("\n...Creating Character [" + this + "]...\n");
         this.commandManager = new CommandManager();
-        System.out.println("\n...Created Character [" + this + "] with Command Manager object [" + commandManager + "], name " + name + ", position (" +  x + ", " + y + "), and health set to " + hp + "...\n");
+        //System.out.println("\n...Created Character [" + this + "] with Command Manager object [" + commandManager + "], name " + name + ", position (" +  x + ", " + y + "), and health set to " + hp + "...\n");
 
         characterArrayList.add(this);
     }

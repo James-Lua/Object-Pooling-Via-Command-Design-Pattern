@@ -1,0 +1,6 @@
+PC: true
+Name: Johnny Test
+HP: 42
+Position: x = 3, y = 5
+Equipped: true
+Equipment: Bastard Sword, Buckler, Rag Tunic
