@@ -1,22 +1,24 @@
 public class TurnBasedGame {
-    private Player player;
-    private final CommandManager commandManager;
 
     public TurnBasedGame() {
-        // Starting position (0,0)
-        player = new Player(0, 0);
-        commandManager = new CommandManager(player, 5);
+        MapGenerator.generateCellArray(5, 5);
     }
 
-    // Wrapper method.
-    public void movePlayer(int toX, int toY) {
-        commandManager.executeMove(toX, toY);
-        // Future movement logic can be wrapped here.
+    public void executeStep() {
+        System.out.println("Executing Game Step...");
+        for (Character c : Character.getCharacterArrayList()) {
+            System.out.println("Executing CommandManager for " + c.getName());
+            c.getCommandManager().execute();
+        }
+        System.out.println("Game Step Successfully Executed. \n");
     }
 
-    // Wrapper method.
-    public void undo() {
-        commandManager.undoLast();
-        // Would need to wrap other logic that would take place on an undo, like world history and health history, etc.
+    public void undoStep() {
+        System.out.println("Undoing Game Step");
+        for (Character c : Character.getCharacterArrayList()) {
+            System.out.println(c.getName() + " undoing CommandManager");
+            c.getCommandManager().undo();
+        }
+        System.out.println("Game Step Successfully Undone. \n");
     }
 }

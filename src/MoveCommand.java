@@ -1,47 +1,51 @@
 public class MoveCommand implements Command {
-    private Player player;
-    private int fromX, fromY;
-    private int toX, toY;
+    private final Character character;
+    private Cell nextCell, previousCell;
     private boolean executed;
 
-    // Empty MoveCommand constructor.
-    public MoveCommand() { }
+    public MoveCommand(Character character, Cell nextCell) {
+        this.character = character;
+        this.nextCell = nextCell;
+        this.previousCell = MapGenerator.getCellAt(character.getPosition().getX(), character.getPosition().getY());
 
-    // initialize defines subject, location, and destination.
-    // Called before && separate to execute() to ensure the command is loaded with the proper state.
-    public void initialize(Player player, int toX, int toY) {
-        this.player = player;
-        this.fromX = player.getX();
-        this.fromY = player.getY();
-        this.toX = toX;
-        this.toY = toY;
+        // This logic will eventually be moved to a different class that handles what cells can be selected based on distance and occupied bool.
+        if (nextCell.isOccupied()) {
+            System.out.println(character.getName() + " cannot move to occupied cell!");
+            return;
+        }
+
         this.executed = false;
     }
 
-    // We execute the initialized movement command, given there is a valid subject and flag.
     @Override
     public void execute() {
-        if (!executed && player != null) {
-            player.setPosition(toX, toY);
-            executed = true;
+        if (!this.executed && !this.nextCell.isOccupied()) {
+            if (this.previousCell != null) { this.previousCell.leaveCell(); }
+            this.nextCell.occupyCell();
+            this.character.getPosition().setPosition(this.nextCell.getX(), this.nextCell.getY());
+            this.executed = true;
         }
     }
 
-    // Reverse the movement action performed by execute() using the vector2 pair (fromX, fromY) that we saved on initialization.
-    // We reset the executed flag so movement can be either 'redone' or redefined and executed. #Currently the object is reset on undo()#
     @Override
     public void undo() {
-        if (executed && player != null) {
-            player.setPosition(fromX, fromY);
-            executed = false;
+        if (this.executed) {
+            // Free the current cell
+            this.nextCell.leaveCell();
+
+            // Re-occupy the previous cell
+            if (this.previousCell != null) {
+                this.previousCell.occupyCell();
+                this.character.getPosition().setPosition(this.previousCell.getX(), this.previousCell.getY());
+            }
+            this.executed = false;
         }
     }
 
-    // Clears the object for reuse. This is called by CommandPool when releasing command objects back into the pool.
     @Override
     public void reset() {
-        this.player = null;
-        this.fromX = this.fromY = this.toX = this.toY = 0;
+        this.nextCell = null;
+        this.previousCell = null;
         this.executed = false;
     }
 }
