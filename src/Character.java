@@ -7,7 +7,7 @@ public abstract class Character {
     private final CommandManager commandManager;
     private final ResourcePoints resourcePoints;
     private final Position position;
-    private final String name;
+    private String name;
 
     public Character(String name, Position position, ResourcePoints resourcePoints) {
         this.name = name;
@@ -27,7 +27,11 @@ public abstract class Character {
 
     public CommandManager getCommandManager() { return this.commandManager; }
 
+    public void setPosition(int x, int y) { position.setPosition(x, y); }
+
     public Position getPosition() { return this.position; }
+
+    public void setName(String name) { this.name = name; } // If this is implemented, we will use the old name to find the latest save file and rename it with the new name.
 
     public String getName() { return this.name; }
 

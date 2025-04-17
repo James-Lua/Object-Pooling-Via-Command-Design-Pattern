@@ -7,7 +7,9 @@ public class MapGenerator {
     public static void generateCellArray(int width, int height) {
         for (int y = 0; y <= height - 1; y++) {
             for (int x = 0; x <= width - 1; x++) {
-                cellArray.add(new Cell(x, y));
+                Cell cell = new Cell();
+                cell.setPosition(x, y);
+                cellArray.add(cell);
             }
         }
     }
@@ -18,7 +20,7 @@ public class MapGenerator {
 
     public static Cell getCellAt(int x, int y) {
         for (Cell cell : cellArray) {
-            if (cell.getX() == x && cell.getY() == y) {
+            if (cell.getPosition().getX() == x && cell.getPosition().getY() == y) {
                 return cell;
             }
         }

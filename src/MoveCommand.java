@@ -22,7 +22,7 @@ public class MoveCommand implements Command {
         if (!this.executed && !this.nextCell.isOccupied()) {
             if (this.previousCell != null) { this.previousCell.leaveCell(); }
             this.nextCell.occupyCell();
-            this.character.getPosition().setPosition(this.nextCell.getX(), this.nextCell.getY());
+            this.character.setPosition(this.nextCell.getPosition().getX(), this.nextCell.getPosition().getY());
             this.executed = true;
         }
     }
@@ -36,7 +36,7 @@ public class MoveCommand implements Command {
             // Re-occupy the previous cell
             if (this.previousCell != null) {
                 this.previousCell.occupyCell();
-                this.character.getPosition().setPosition(this.previousCell.getX(), this.previousCell.getY());
+                this.character.setPosition(this.previousCell.getPosition().getX(), this.previousCell.getPosition().getY());
             }
             this.executed = false;
         }

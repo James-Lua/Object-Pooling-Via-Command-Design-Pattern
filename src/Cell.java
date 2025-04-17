@@ -1,19 +1,26 @@
 public class Cell {
-    private final int x, y;
+    private final Position position;
     private boolean isOccupied;
 
-    public Cell(int x, int y){
-        this.x = x;
-        this.y = y;
+    public Cell(){
+        this.position = new Position();
         this.isOccupied = false;
     }
 
-    public int getX(){
-        return this.x;
+    public void setPosition(int x, int y){
+        this.position.setPosition(x, y);
     }
 
-    public int getY(){
-        return this.y;
+    public Position getPosition(){
+        return this.position;
+    }
+
+    public int getXPos(){
+        return this.position.getX();
+    }
+
+    public int getYPos(){
+        return this.position.getY();
     }
 
     public boolean isOccupied(){
@@ -22,11 +29,11 @@ public class Cell {
 
     public void occupyCell(){
         this.isOccupied = true;
-        System.out.println("Cell at (" + this.x + ", " + this.y + ") is now occupied.");
+        System.out.println("Cell at (" + this.position.getX() + ", " + this.position.getY() + ") is now occupied.");
     }
 
     public void leaveCell(){
         this.isOccupied = false;
-        System.out.println("Cell at (" + this.x + ", " + this.y + ") is now unoccupied.");
+        System.out.println("Cell at (" + this.position.getX() + ", " + this.position.getY() + ") is no longer occupied.");
     }
 }

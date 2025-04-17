@@ -9,7 +9,7 @@ public class Position {
     public Position() {
         this.x = 0;
         this.y = 0;
-    }
+    } // May need to delete this method as it could cause mistakes in future features.
 
     public int getX() {
         return this.x;
