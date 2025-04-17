@@ -12,8 +12,8 @@ public class CommandHistory {
         return history.pop();
     }
 
-    public CommandMacro removeOldest() {
-        return history.removeLast();
+    public void removeOldest() {
+        history.removeLast();
     }
 
     public int size() {
